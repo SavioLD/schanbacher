@@ -143,18 +143,24 @@ Ein Fragenschritt passt damit auf jedem Standard-Handy ohne Scrollen ins Bild.
 
 ## Lead Table
 
-**Eine** Kachel für alle drei Stellen – Variable `WEBHOOK_URL` in
-`index.html`: `https://api-v2.lead-table.com/api/webhook/generic/…`
+**Jede Stelle hat ihre eigene Kachel.** Die URL steht beim jeweiligen
+`JOBS`-Eintrag unter `webhook`; `WEBHOOK_URL` ist nur noch der Rückfall,
+falls eine Stelle einmal keine eigene URL hat.
 
-Die Stelle steht im Feld `stelle`, danach lässt sich in der Lead Table
-filtern, gruppieren und automatisieren. Mehr Webhooks braucht es dafür nicht.
+| Stelle | `tableID` der Kachel |
+|--------|----------------------|
+| Maler (m/w/d) | `6abf949ddeef0ef97f14e25f` |
+| Parkettleger (m/w/d) | `6abfbaa934cbe614b696bacb` |
+| Raumausstatter (m/w/d) | `6abfbaea9fa0d58be73af4a5` |
 
-Soll eine Stelle trotzdem in eine **eigene** Kachel laufen, bekommt sie in
-`JOBS` ein eigenes Feld `webhook:"https://…"` – das überschreibt die
-Standard-URL nur für diese Stelle. Mischbetrieb ist möglich.
+Alle drei gehören zu `customerID 6abf9480b0110a55c0150242`.
+
+Das Routing ist im Browser geprüft – über die Deeplinks, über die Aliase und
+über die Auswahl im Formular landet jede Bewerbung in genau einer und der
+richtigen Kachel.
 
 Gesendet wird **nur** bei vollständiger, qualifizierter Bewerbung.
-K.-o.-Abbrüche verlassen die Seite nie.
+K.-o.-Abbrüche verlassen die Seite nie – auch nicht an die anderen Kacheln.
 
 Payload – **jedes Feld genau einmal**, Vor- und Nachname getrennt, **kein**
 kombiniertes `name`/`fullname`/`vollstaendiger_name`:
