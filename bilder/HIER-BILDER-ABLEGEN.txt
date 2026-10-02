@@ -1,0 +1,22 @@
+BILDMATERIAL FÜR DIE KARRIERESEITE
+==================================
+
+Alle Dateien einfach in diesen Ordner (bilder/) legen. Die Seite erkennt
+sie automatisch – fehlt eine Datei, bleibt der Farbverlauf bzw. der
+Text-Schriftzug stehen (nie ein kaputtes Bild).
+
+1) LOGO  (wird im Header, im Hero und im Footer eingesetzt)
+   bilder/schanbacher-logo.svg        bevorzugt (oder .png)
+   bilder/schanbacher-logo-weiss.svg  helle Variante für Hero + Footer (oder .png)
+
+   Alternativ funktionieren auch:  logo.svg / logo.png / logo.jpg
+                                   logo-weiss.svg / logo-weiss.png
+
+   Bitte das Original-Logo verwenden – nicht nachbauen, nicht einfärben,
+   Seitenverhältnis nicht verzerren.
+
+2) HERO-FOTO  (großes Bild oben)
+   bilder/hero.jpg   (auch .jpeg / .png / .webp möglich, oder maler.jpg)
+
+   Querformat, mindestens ~1600 px breit. Das Motiv sollte rechts liegen –
+   links liegt die Textfläche.
