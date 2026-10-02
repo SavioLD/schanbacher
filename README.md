@@ -1,7 +1,8 @@
-# Schanbacher – Karriereseite (Maler m/w/d)
+# Schanbacher – Karriereseite
 
 Recruiting-Landingpage der **Schanbacher GmbH**, Filderstadt.
-Ausgeschriebene Stelle: **Maler (m/w/d)** – und ausschließlich diese.
+Ausgeschriebene Stellen: **Maler**, **Parkettleger** und **Raumausstatter**
+(m/w/d) – und ausschließlich diese drei.
 
 ## Inhalt
 
@@ -35,10 +36,47 @@ Farben und Schriften stecken **ausschließlich** im `:root`-Block ganz oben in
 > 1:1 aus der Website gezogen werden. Sobald Logo/Styleguide vorliegen:
 > oben die fünf Zeilen ersetzen, fertig.
 
+## Stellen pflegen
+
+Alle drei Stellen stehen in **einer** Config (`var JOBS` im `<script>` am
+Seitenende). Sie speist gleichzeitig:
+
+- die Stellenkarten in der Sektion „Offene Stellen"
+- die Stellenauswahl im Formular
+- den Hero-Text bei `?stelle=…`
+- die JobPosting-Structured-Data
+
+Eine Stelle ändern oder ergänzen heißt also: **einen** Eintrag anfassen.
+
+```js
+{ key:"maler", title:"Maler (m/w/d)", kurz:"Maler", icon:ICONS.maler,
+  teaser:"…",            // Einzeiler unter dem Titel im Formular
+  hook:"…",              // Hero-Text bei ?stelle=maler
+  aliase:["maler", …],   // weitere Schreibweisen für den Deeplink
+  tags:[…], aufgaben:[…], profil:[…], bieten:[…] }
+```
+
+`bieten` ist bewusst je Stelle unterschiedlich – Firmenwagen gibt es laut
+Vorgabe bei Maler und Raumausstatter, Weiterbildung bei Parkettleger und
+Raumausstatter.
+
+## Stellen-Deeplinks für die Anzeige
+
+Die Anzeige kann direkt auf eine Stelle verlinken. Die Seite textet dann den
+Hero auf die Stelle, wählt sie im Formular vor und **überspringt den
+Auswahl-Schritt** – aus 7 Schritten werden 6.
+
+- `…/?stelle=maler`
+- `…/?stelle=parkettleger`
+- `…/?stelle=raumausstatter`
+
+Ohne Parameter beginnt das Formular mit der Stellenauswahl.
+
 ## Vorfilterung (Screening)
 
-Fünf Fragen, **eine pro Schritt**, danach die Kontaktdaten – insgesamt
-6 Schritte. Alle fünf Fragen sind **Pflichtfragen (K.-o.-Kriterien)**:
+Fünf Fragen, **eine pro Schritt**, davor die Stellenauswahl (entfällt beim
+Deeplink), danach die Kontaktdaten. Die Screening-Kriterien gelten für alle
+drei Stellen gleich. Alle fünf Fragen sind **Pflichtfragen (K.-o.-Kriterien)**:
 
 | # | Frage | Kategorie | Erfüllt bei |
 |---|-------|-----------|-------------|
@@ -85,10 +123,11 @@ Mindesthöhe (`--form-min` / `--form-min-mobile`), die auch in der
 Mobile-Query gesetzt bleibt – dadurch sind die Fragen 1–5 exakt gleich hoch
 und der Weiter-Button steht immer an derselben Stelle.
 
-Nachgemessen im Browser (Chromium, Touch-Emulation):
+Nachgemessen im Browser (Chromium, Touch-Emulation), jeweils beide Wege –
+mit Deeplink (6 Schritte) und ohne (7 Schritte):
 
-| Viewport | scrollY über alle 6 Schritte | Höhe Fragen 1–5 | Weiter-Button | Karte + Topbar |
-|----------|------------------------------|-----------------|---------------|----------------|
+| Viewport | scrollY über alle Schritte | Höhe Fragenschritte | Weiter-Button | Karte + Topbar |
+|----------|----------------------------|---------------------|---------------|----------------|
 | 360 × 640 | konstant | 508 px | fix | 624 px |
 | 375 × 667 | konstant | 508 px | fix | 624 px |
 | 390 × 844 | konstant | 508 px | fix | 624 px |
@@ -133,6 +172,14 @@ Standardfelder, alles Weitere als Zusatzfelder).
 
 ## Noch zu prüfen
 
+- **„wünschenswert" vs. K.-o.:** In allen drei Stellenbeschreibungen stehen
+  Ausbildung, Berufserfahrung und Führerschein Klasse B als *wünschenswert* –
+  im Screening sind sie harte Ausschlusskriterien. Bewerber:innen lesen also
+  „wünschenswert", bewerben sich und fliegen mitten im Formular raus. Entweder
+  den Anzeigentext auf „Voraussetzung" ziehen oder das Kriterium lockern.
+- **Weihnachtsgeld** taucht in keiner der drei Benefit-Listen mehr auf und ist
+  deshalb nicht auf der Seite. Falls es doch gilt: bei welchen Stellen?
+- **„Unbefristet"** ist angenommen (Trust-Band, Tags, FAQ) – bitte bestätigen.
 - Logo und Hero-Foto in `bilder/` ablegen
 - CI-Farben/Schrift gegen den echten Styleguide abgleichen
 - Links zu Impressum und Datenschutz (aktuell
