@@ -53,12 +53,18 @@ Eine Stelle ändern oder ergänzen heißt also: **einen** Eintrag anfassen.
   teaser:"…",            // Einzeiler unter dem Titel im Formular
   hook:"…",              // Hero-Text bei ?stelle=maler
   aliase:["maler", …],   // weitere Schreibweisen für den Deeplink
-  tags:[…], aufgaben:[…], profil:[…], bieten:[…] }
+  tags:[…], aufgaben:[…], profil:[…], bieten:[…],
+  webhook:"https://…"    // optional, eigene Lead-Table-Kachel (s. u.) }
 ```
 
-`bieten` ist bewusst je Stelle unterschiedlich – Firmenwagen gibt es laut
-Vorgabe bei Maler und Raumausstatter, Weiterbildung bei Parkettleger und
-Raumausstatter.
+`bieten` ist bewusst je Stelle unterschiedlich – Firmenwagen bei Maler und
+Raumausstatter, Weiterbildung bei Parkettleger und Raumausstatter,
+Weihnachtsgeld bei allen dreien.
+
+Der Block **„Das setzen wir voraus"** ist dagegen für alle Stellen gleich und
+steht einmal in `var VORAUSSETZUNGEN`. Er enthält exakt die K.-o.-Kriterien,
+die das Screening später prüft – so verlangt die Anzeige nichts anderes als
+das Formular.
 
 ## Stellen-Deeplinks für die Anzeige
 
@@ -137,8 +143,15 @@ Ein Fragenschritt passt damit auf jedem Standard-Handy ohne Scrollen ins Bild.
 
 ## Lead Table
 
-Webhook (Variable `WEBHOOK_URL` in `index.html`):
-`https://api-v2.lead-table.com/api/webhook/generic/…`
+**Eine** Kachel für alle drei Stellen – Variable `WEBHOOK_URL` in
+`index.html`: `https://api-v2.lead-table.com/api/webhook/generic/…`
+
+Die Stelle steht im Feld `stelle`, danach lässt sich in der Lead Table
+filtern, gruppieren und automatisieren. Mehr Webhooks braucht es dafür nicht.
+
+Soll eine Stelle trotzdem in eine **eigene** Kachel laufen, bekommt sie in
+`JOBS` ein eigenes Feld `webhook:"https://…"` – das überschreibt die
+Standard-URL nur für diese Stelle. Mischbetrieb ist möglich.
 
 Gesendet wird **nur** bei vollständiger, qualifizierter Bewerbung.
 K.-o.-Abbrüche verlassen die Seite nie.
@@ -172,14 +185,7 @@ Standardfelder, alles Weitere als Zusatzfelder).
 
 ## Noch zu prüfen
 
-- **„wünschenswert" vs. K.-o.:** In allen drei Stellenbeschreibungen stehen
-  Ausbildung, Berufserfahrung und Führerschein Klasse B als *wünschenswert* –
-  im Screening sind sie harte Ausschlusskriterien. Bewerber:innen lesen also
-  „wünschenswert", bewerben sich und fliegen mitten im Formular raus. Entweder
-  den Anzeigentext auf „Voraussetzung" ziehen oder das Kriterium lockern.
-- **Weihnachtsgeld** taucht in keiner der drei Benefit-Listen mehr auf und ist
-  deshalb nicht auf der Seite. Falls es doch gilt: bei welchen Stellen?
-- **„Unbefristet"** ist angenommen (Trust-Band, Tags, FAQ) – bitte bestätigen.
+- **„Unbefristet"** ist angenommen (Tags, FAQ) – bitte bestätigen.
 - Logo und Hero-Foto in `bilder/` ablegen
 - CI-Farben/Schrift gegen den echten Styleguide abgleichen
 - Links zu Impressum und Datenschutz (aktuell

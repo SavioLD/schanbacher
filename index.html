@@ -155,6 +155,8 @@ section[id],.form-card{scroll-margin-top:80px}
 .job ul{list-style:none;display:grid;gap:9px;margin-bottom:22px;font-size:14.5px;color:var(--ink-soft);font-weight:500}
 .job ul li{display:flex;gap:9px}
 .job ul li::before{content:"";flex:0 0 6px;height:6px;border-radius:50%;background:var(--brand);margin-top:8px}
+.job ul.job__must li{font-weight:700;color:var(--ink)}
+.job ul.job__must li::before{background:var(--brand-900)}
 .job__split{display:grid;grid-template-columns:1fr 1fr;gap:10px 30px}
 @media(max-width:620px){.job__split{grid-template-columns:1fr;gap:0}}
 .job__foot{margin-top:auto;display:flex;flex-direction:column;gap:10px}
@@ -368,7 +370,7 @@ footer{padding:52px 0 36px;background:var(--brand-900);color:#d7d9dd}
         </div>
         <span class="hero__eyebrow"><span class="dot"></span>Filderstadt · Wir stellen ein</span>
         <h1 id="heroTitle">Dein neuer Job bei Schanbacher</h1>
-        <p class="hero__sub" id="heroSub">Drei Stellen im Handwerk, ein Familienbetrieb seit 1968. Bewirb dich in unter 60&nbsp;Sekunden – ganz ohne Anschreiben und Lebenslauf.</p>
+        <p class="hero__sub" id="heroSub">Drei Stellen im Handwerk, Weihnachtsgeld und ein Familienbetrieb seit 1968. Bewirb dich in unter 60&nbsp;Sekunden – ganz ohne Anschreiben und Lebenslauf.</p>
         <div class="hero__cta">
           <a class="btn btn--primary" href="#bewerbung">Jetzt bewerben
             <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
@@ -390,7 +392,7 @@ footer{padding:52px 0 36px;background:var(--brand-900);color:#d7d9dd}
   <div class="shell">
     <div class="trust__grid">
       <div class="trust__item"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V8l7-5 7 5v13"/><path d="M10 21v-6h4v6"/></svg><div><b>Seit 1968</b><span>Familienbetrieb, 3. Generation</span></div></div>
-      <div class="trust__item"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 9 5-9 5-9-5 9-5z"/><path d="m3 12 9 5 9-5"/><path d="m3 17 9 5 9-5"/></svg><div><b>Alles aus einer Hand</b><span>Boden, Wand, Einrichtung</span></div></div>
+      <div class="trust__item"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="13" rx="2"/><path d="M12 8v13M3 12h18"/><path d="M12 8S9.5 3 7 3a2.5 2.5 0 0 0 0 5"/><path d="M12 8s2.5-5 5-5a2.5 2.5 0 0 1 0 5"/></svg><div><b>Weihnachtsgeld</b><span>Bei allen drei Stellen</span></div></div>
       <div class="trust__item"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></svg><div><b>Unbefristet</b><span>Sichere Festanstellung</span></div></div>
       <div class="trust__item"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></svg><div><b>Sofort möglich</b><span>Schneller Einstieg</span></div></div>
     </div>
@@ -416,13 +418,13 @@ footer{padding:52px 0 36px;background:var(--brand-900);color:#d7d9dd}
     <h2 class="sec-title">Ein Familienbetrieb, der sein Handwerk ernst nimmt.</h2>
     <p class="sec-lead">Seit 1968 gestalten wir Räume – vom Parkett über die Wand bis zur fertigen Einrichtung. Bei uns bist du nicht die Nummer auf einer Baustellenliste, sondern Handwerker:in mit eigener Handschrift.</p>
     <div class="benefit-grid">
+      <div class="benefit reveal"><div class="benefit__ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="13" rx="2"/><path d="M12 8v13M3 12h18"/><path d="M12 8S9.5 3 7 3a2.5 2.5 0 0 0 0 5"/><path d="M12 8s2.5-5 5-5a2.5 2.5 0 0 1 0 5"/></svg></div><b>Weihnachtsgeld</b><p>Zum Jahresende gibt es Weihnachtsgeld obendrauf – bei allen drei Stellen, eine feste Größe, mit der du planen kannst.</p></div>
       <div class="benefit reveal"><div class="benefit__ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="19" cy="13" r="2"/><circle cx="6" cy="12" r="2.5"/><path d="M12 22a10 10 0 1 1 10-10c0 1.7-1.3 3-3 3h-2a2 2 0 0 0-1.6 3.2 2 2 0 0 1-1.6 3.2z"/></svg></div><b>Abwechslungsreich &amp; kreativ</b><p>Kein Objekt gleicht dem anderen: vom Altbau über den Showroom bis zur fugenlosen Wandgestaltung.</p></div>
       <div class="benefit reveal"><div class="benefit__ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.1 14a5 5 0 1 0-6.2 0c.6.5 1.1 1.2 1.1 2h4c0-.8.5-1.5 1.1-2z"/></svg></div><b>Raum für eigene Ideen</b><p>Eigenverantwortliches Arbeiten statt Ansagen von oben. Deine Lösung ist gefragt – und wird gehört.</p></div>
       <div class="benefit reveal"><div class="benefit__ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="6" width="15" height="11" rx="2"/><path d="M16 10h3.5L23 13.5V17h-7z"/><circle cx="5.5" cy="18.5" r="2"/><circle cx="18.5" cy="18.5" r="2"/></svg></div><b>Firmenwagen &amp; Weiterbildung</b><p>Je nach Stelle: Firmenwagen zur dienstlichen Nutzung und individuelle Lern- und Weiterbildungsmöglichkeiten. Was für deine Stelle gilt, steht direkt in der Stellenbeschreibung.</p></div>
       <div class="benefit reveal"><div class="benefit__ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><b>Familienbetrieb seit 1968</b><p>Dritte Generation, kurze Wege, Entscheidungen ohne Konzern-Theater – und Kolleg:innen, die lange bleiben.</p></div>
       <div class="benefit reveal"><div class="benefit__ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 9 5-9 5-9-5 9-5z"/><path d="m3 12 9 5 9-5"/><path d="m3 17 9 5 9-5"/></svg></div><b>Alles aus einer Hand</b><p>Boden, Wand und Einrichtung aus einem Haus – du siehst, was aus deiner Arbeit am Ende wirklich wird.</p></div>
-      <div class="benefit reveal"><div class="benefit__ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg></div><b>Standort Filderstadt</b><p>Bernhausen, gut erreichbar auf den Fildern – kurze Wege statt stundenlanger Anfahrt.</p></div>
-    </div>
+          </div>
   </div>
 </section>
 
@@ -649,6 +651,9 @@ footer{padding:52px 0 36px;background:var(--brand-900);color:#d7d9dd}
      vollständigen, qualifizierten Bewerbung gesendet – K.-o.-Abbrüche
      verlassen die Seite nie.
      ===================================================================== */
+  /* Standard-Kachel für alle Stellen. Soll eine Stelle in eine EIGENE
+     Lead-Table-Kachel laufen, bekommt sie in JOBS einfach ein eigenes
+     Feld  webhook:"https://…"  – das überschreibt diese URL. */
   var WEBHOOK_URL = "https://api-v2.lead-table.com/api/webhook/generic/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0YWJsZUlEIjoiNmFiZjk0OWRkZWVmMGVmOTdmMTRlMjVmIiwiY3VzdG9tZXJJRCI6IjZhYmY5NDgwYjAxMTBhNTVjMDE1MDI0MiIsImFnZW5jeUlEIjoiNjliZDc3NzVlNGQxN2IzOGVkNjUzZDE2IiwiaWF0IjoxNzkwOTQwMzE3fQ.iQbGYjywtsyUnq84gLIFM56pD113zQmXBliUC6p9M3Y";
 
   /* =====================================================================
@@ -679,12 +684,11 @@ footer{padding:52px 0 36px;background:var(--brand-900);color:#d7d9dd}
       ],
       profil:[
         "Du arbeitest selbstständig und verantwortungsbewusst",
-        "Du bringst Kreativität und Freude an individueller Gestaltung mit",
-        "Ausbildung und Berufserfahrung im Malerhandwerk sind wünschenswert",
-        "Ein Führerschein der Klasse B ist wünschenswert"
+        "Du bringst Kreativität und Freude an individueller Gestaltung mit"
       ],
       bieten:[
         "Firmenwagen zur dienstlichen Nutzung",
+        "Weihnachtsgeld",
         "Abwechslungsreiches und kreatives Arbeitsumfeld",
         "Eigenverantwortliches Arbeiten und Raum für eigene Ideen"
       ]
@@ -705,10 +709,10 @@ footer{padding:52px 0 36px;background:var(--brand-900);color:#d7d9dd}
       profil:[
         "Du kannst selbstständig arbeiten",
         "Du bringst ein hohes Maß an Eigenverantwortung mit",
-        "Du hast Freude an präziser handwerklicher Arbeit",
-        "Ausbildung, Berufserfahrung und Führerschein Klasse B sind wünschenswert"
+        "Du hast Freude an präziser handwerklicher Arbeit"
       ],
       bieten:[
+        "Weihnachtsgeld",
         "Abwechslungsreiches und kreatives Arbeitsumfeld",
         "Eigenverantwortliches Arbeiten und Raum für eigene Ideen",
         "Individuelle Lern- und Weiterbildungsmöglichkeiten"
@@ -730,16 +734,26 @@ footer{padding:52px 0 36px;background:var(--brand-900);color:#d7d9dd}
       profil:[
         "Du arbeitest selbstständig und zuverlässig",
         "Du übernimmst gerne Verantwortung",
-        "Du hast Freude an hochwertiger handwerklicher Arbeit",
-        "Ausbildung, Berufserfahrung und Führerschein Klasse B sind wünschenswert"
+        "Du hast Freude an hochwertiger handwerklicher Arbeit"
       ],
       bieten:[
         "Firmenwagen zur dienstlichen Nutzung",
+        "Weihnachtsgeld",
         "Abwechslungsreiches und kreatives Arbeitsumfeld",
         "Eigenverantwortliches Arbeiten und Raum für eigene Ideen",
         "Individuelle Lern- und Weiterbildungsmöglichkeiten"
       ]
     }
+  ];
+
+  /* Die K.-o.-Kriterien gelten für alle drei Stellen gleich. Sie stehen
+     deshalb einmal hier und werden in jede Stellenkarte gerendert – damit
+     die Anzeige exakt das verlangt, was das Screening später prüft. */
+  var VORAUSSETZUNGEN = [
+    "Abgeschlossene Ausbildung im Handwerk (Maler/Lackierer, Parkettleger, Raumausstatter o. Ä.) und mindestens 3 Jahre Berufserfahrung",
+    "Führerschein der Klasse B",
+    "Deutschkenntnisse auf mindestens B2-Niveau",
+    "Wohnort im Umkreis von rund 30 km um unseren Standort Filderstadt"
   ];
 
   function jobByKey(k){ for (var i=0;i<JOBS.length;i++){ if (JOBS[i].key===k) return JOBS[i]; } return null; }
@@ -812,6 +826,7 @@ footer{padding:52px 0 36px;background:var(--brand-900);color:#d7d9dd}
         + '<h3>'+esc(j.title)+'</h3>'
         + '<div class="job__meta">'+j.tags.map(function(t){ return '<span class="tag">'+esc(t)+'</span>'; }).join("")+'</div>'
         + '<h4>Deine Aufgaben</h4><ul class="'+splitClass.trim()+'">'+j.aufgaben.map(function(x){ return '<li>'+esc(x)+'</li>'; }).join("")+'</ul>'
+        + '<h4>Das setzen wir voraus</h4><ul class="job__must">'+VORAUSSETZUNGEN.map(function(x){ return '<li>'+esc(x)+'</li>'; }).join("")+'</ul>'
         + '<h4>Das bringst du mit</h4><ul>'+j.profil.map(function(x){ return '<li>'+esc(x)+'</li>'; }).join("")+'</ul>'
         + '<h4>Das bieten wir dir</h4><ul>'+j.bieten.map(function(x){ return '<li>'+esc(x)+'</li>'; }).join("")+'</ul>'
         + '<div class="job__foot"><button class="btn btn--primary" data-apply="'+j.key+'">Jetzt bewerben</button></div>'
@@ -1029,12 +1044,14 @@ footer{padding:52px 0 36px;background:var(--brand-900);color:#d7d9dd}
     /* Honeypot: Bots füllen das versteckte Feld – still beenden, kein Lead. */
     if (form.querySelector('input[name="firma_website"]').value){ finishSuccess(); return; }
     submitting=true; btnNext.disabled=true; btnNext.textContent="Wird gesendet …"; errBox.classList.remove("is-visible");
-    var payload=JSON.stringify(collect());
-    fetch(WEBHOOK_URL,{ method:"POST", headers:{ "Content-Type":"application/json" }, body:payload })
+    var data=collect(), payload=JSON.stringify(data);
+    var job=jobByTitle(data.stelle);
+    var url=(job && job.webhook) || WEBHOOK_URL;
+    fetch(url,{ method:"POST", headers:{ "Content-Type":"application/json" }, body:payload })
       .then(function(res){ if(!res.ok) throw new Error("HTTP "+res.status); finishSuccess(); })
       .catch(function(){
         /* Fallback für CORS-Preflight-Probleme: no-cors, text/plain. */
-        return fetch(WEBHOOK_URL,{ method:"POST", mode:"no-cors", headers:{ "Content-Type":"text/plain" }, body:payload }).then(finishSuccess);
+        return fetch(url,{ method:"POST", mode:"no-cors", headers:{ "Content-Type":"text/plain" }, body:payload }).then(finishSuccess);
       })
       .catch(function(){
         submitting=false; btnNext.disabled=false; btnNext.textContent="Bewerbung absenden";
