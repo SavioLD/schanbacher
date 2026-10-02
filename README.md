@@ -193,3 +193,46 @@ Standardfelder, alles Weitere als Zusatzfelder).
 - Das Analytics-Snippet am Seitenende (`analytics.laendle-digital.com`,
   `data-website-id="schanbacher_gmbh"`) ist 1:1 von der Referenzseite
   übernommen – bei Bedarf entfernen oder die ID anpassen
+
+## Creatives (Meta Ads) + Facebook-Seite
+
+Alles in `creatives/`. Gerendert wird mit **einem** Befehl:
+
+```bash
+node creatives/build.mjs
+```
+
+Das Skript baut jede Datei aus HTML/CSS im CI der Karriereseite – gleiche
+Farben, gleiche Schrift (Figtree liegt als woff2 in `creatives/fonts/`, damit
+offline identisch gerendert wird). Creatives und Facebook-Bilder wirken
+dadurch als ein Auftritt.
+
+**Was erzeugt wird** – 3 Stellen × 3 Motive × 2 Formate + 2 Facebook-Bilder:
+
+| Motiv | Ansatz | CTA |
+|-------|--------|-----|
+| `stelle` | Stelle direkt ansprechen | In 60 Sekunden bewerben |
+| `check` | Qualifizierer – nennt die K.-o.-Kriterien, filtert auf Qualität statt Masse | Dann sollten wir reden |
+| `benefit` | Problem → Lösung, Benefits der jeweiligen Stelle | Jetzt bewerben |
+
+Formate: `4x5` (1080 × 1350) und `9x16` (1080 × 1920, Safe Zones für
+Stories/Reels berücksichtigt). Ein weiteres Format ist eine Zeile in
+`FORMATE` (z. B. `1x1` liegt auskommentiert bereit).
+
+Facebook: `facebook-profilbild.png` (1080 × 1080, alles Wichtige in der
+mittigen Kreisfläche) und `facebook-titelbild.png` (1640 × 856,
+Sicherheitszone 1092 × 616 mittig, unten rechts für den Button frei).
+
+**Bildmaterial.** Das Skript verwendet ausschließlich Dateien aus `bilder/`:
+
+- Foto je Stelle: `bilder/maler.jpg`, `bilder/parkettleger.jpg`,
+  `bilder/raumausstatter.jpg` – ersatzweise `bilder/hero.jpg`
+- Logo: `bilder/schanbacher-logo-weiss.png/.svg` (oder `logo-weiss`,
+  `schanbacher-logo`, `logo`). Es wird unverändert eingesetzt – nicht
+  nachgebaut, nicht eingefärbt, Seitenverhältnis bleibt erhalten.
+
+Fehlt eine Datei, rendert das Skript den CI-Farbverlauf bzw. die Wortmarke
+und hängt **`-PREVIEW`** an den Dateinamen. Diese Dateien sind reine
+Layout-Vorschauen und **nicht zum Schalten gedacht**. Sobald die Bilder in
+`bilder/` liegen: einmal `node creatives/build.mjs` – dann fallen die
+`-PREVIEW`-Dateien weg und die fertigen Creatives stehen da.
