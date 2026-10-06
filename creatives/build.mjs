@@ -16,22 +16,23 @@
    ===================================================================== */
 
 import { chromium } from '/opt/node-tools/node_modules/playwright/index.mjs';
-import { readFileSync, existsSync, writeFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, existsSync, writeFileSync, mkdirSync, rmSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..');
 const OUT  = HERE;
+const TMP  = join(HERE, '.render.html');   // temporäre Render-Datei, wird am Ende gelöscht
 
 /* ---------- CI (identisch mit dem :root-Block in index.html) ---------- */
 const CI = {
-  brand:     '#f5b400',
-  brandDark: '#d99e00',
-  ink:       '#1b1d21',
-  inkDeep:   '#131418',
-  onBrand:   '#1b1d21',
-  soft:      '#fff4d6'
+  brand:     '#ffda00',   // direkt aus dem Original-Logo ausgelesen
+  brandDark: '#e6c400',
+  ink:       '#1d1d1b',   // ebenfalls aus dem Logo
+  inkDeep:   '#141412',
+  onBrand:   '#1d1d1b',
+  soft:      '#fff8d1'
 };
 
 /* ---------- Schrift lokal einbetten, damit offline identisch gerendert wird ---------- */
@@ -44,25 +45,25 @@ const FONTS = [font(500,'figtree-latin-500-normal.woff2'),
 
 /* ---------- Logo: Original aus bilder/, sonst Wortmarke ---------- */
 const LOGO_KANDIDATEN = [
+  'bilder/Schanbacher_Logo_weiss_SVG.png',
   'bilder/schanbacher-logo-weiss.png','bilder/schanbacher-logo-weiss.svg',
   'bilder/logo-weiss.png','bilder/logo-weiss.svg',
   'bilder/schanbacher-logo.png','bilder/schanbacher-logo.svg',
   'bilder/logo.png','bilder/logo.svg'
 ];
-function dataUri(relPfad){
-  const p = join(ROOT, relPfad);
-  if (!existsSync(p)) return null;
-  const ext = relPfad.split('.').pop().toLowerCase();
-  const mime = ext === 'svg' ? 'image/svg+xml' : ext === 'png' ? 'image/png' : 'image/jpeg';
-  return `data:${mime};base64,${readFileSync(p).toString('base64')}`;
+/* Die Originalfotos sind mehrere MB groß – sie werden deshalb nicht als
+   data-URI eingebettet, sondern relativ referenziert. Gerendert wird aus
+   einer temporären HTML-Datei in creatives/, darum "../". */
+function bildPfad(relPfad){
+  return existsSync(join(ROOT, relPfad)) ? '../' + relPfad.split('/').map(encodeURIComponent).join('/') : null;
 }
-const LOGO = LOGO_KANDIDATEN.map(dataUri).find(Boolean) || null;
+const LOGO = LOGO_KANDIDATEN.map(bildPfad).find(Boolean) || null;
 
 /* ---------- Stellen ---------- */
 const STELLEN = [
   {
     key: 'maler', beruf: 'Maler', titel: 'Maler (m/w/d)',
-    foto: ['bilder/maler.jpg','bilder/maler.jpeg','bilder/maler.png','bilder/hero.jpg'],
+    foto: ['bilder/IMG_0218.JPG','bilder/maler.jpg','bilder/hero.jpg'],   // Wand spachteln
     koennen: 'Spachteltechniken, Oberflächenputze und fugenlose Wände',
     chips: ['Firmenwagen', 'Weihnachtsgeld', 'Eigene Ideen'],
     benefitZeile: 'Firmenwagen, Weihnachtsgeld – und Wände, die deine Handschrift tragen.',
@@ -70,7 +71,7 @@ const STELLEN = [
   },
   {
     key: 'parkettleger', beruf: 'Parkettleger', titel: 'Parkettleger (m/w/d)',
-    foto: ['bilder/parkettleger.jpg','bilder/parkettleger.jpeg','bilder/parkettleger.png','bilder/hero.jpg'],
+    foto: ['bilder/IMG_0213.jpeg','bilder/parkettleger.jpg','bilder/hero.jpg'],   // Boden schleifen
     koennen: 'Holzböden verlegen, schleifen und veredeln',
     chips: ['Weihnachtsgeld', 'Weiterbildung', 'Eigene Ideen'],
     benefitZeile: 'Weihnachtsgeld, Weiterbildung – und Böden, die man dir ansieht.',
@@ -78,7 +79,7 @@ const STELLEN = [
   },
   {
     key: 'raumausstatter', beruf: 'Raumausstatter', titel: 'Raumausstatter (m/w/d)',
-    foto: ['bilder/raumausstatter.jpg','bilder/raumausstatter.jpeg','bilder/raumausstatter.png','bilder/hero.jpg'],
+    foto: ['bilder/IMG_0212.JPG','bilder/raumausstatter.jpg','bilder/hero.jpg'],   // Wand/Oberfläche
     koennen: 'Beläge, Holzböden sowie Licht-, Sicht- und Sonnenschutz',
     chips: ['Firmenwagen', 'Weihnachtsgeld', 'Weiterbildung'],
     benefitZeile: 'Firmenwagen, Weihnachtsgeld – und jeden Tag ein anderer Raum.',
@@ -126,7 +127,7 @@ const FORMATE = {
 /* ---------- Template ---------- */
 function html({ stelle, motiv, fmt, inhalt, fotoUri }) {
   const bg = fotoUri
-    ? `background-image:linear-gradient(176deg,rgba(19,20,24,.80) 0%,rgba(19,20,24,.52) 42%,rgba(19,20,24,.93) 100%),url('${fotoUri}');background-size:cover;background-position:center`
+    ? `background-image:linear-gradient(176deg,rgba(20,20,18,.40) 0%,rgba(20,20,18,.42) 28%,rgba(20,20,18,.93) 70%,rgba(20,20,18,.97) 100%),url('${fotoUri}');background-size:cover;background-position:center`
     : `background-image:linear-gradient(150deg,${CI.inkDeep} 0%,#24262b 48%,#3c4047 100%)`;
 
   const logo = LOGO
@@ -150,7 +151,10 @@ body{font-family:Figtree,sans-serif;color:#fff;${bg};position:relative;overflow:
   padding:${fmt.padTop}px ${fmt.padX}px ${fmt.padBottom}px}
 /* Gelbe Kante als wiedererkennbares CI-Element */
 .kante{position:absolute;left:0;right:0;bottom:0;height:14px;background:${CI.brand}}
-.logo-img{height:${Math.round(fmt.w*0.085)}px;width:auto;object-fit:contain;object-position:left}
+/* Sichert die Lesbarkeit von Logo und Claim auf hellen Fotos. */
+.kopfschleier{position:absolute;left:0;right:0;top:0;height:${fmt.padTop + Math.round(fmt.w*0.115) + 70}px;
+  background:linear-gradient(180deg,rgba(16,16,14,.92) 0%,rgba(16,16,14,.72) 45%,rgba(16,16,14,0) 100%);pointer-events:none}
+.logo-img{height:${Math.round(fmt.w*0.115)}px;width:auto;object-fit:contain;object-position:left}
 .logo-text b{display:block;font-weight:900;font-size:${Math.round(fmt.w*0.052)}px;letter-spacing:.02em;color:${CI.brand};line-height:1}
 .logo-text span{display:block;font-weight:700;font-size:${Math.round(fmt.w*0.0148)}px;letter-spacing:.14em;text-transform:uppercase;color:#dfe1e5;margin-top:9px}
 /* Text + CTA unten gruppieren – oben bleibt die Fläche fürs Foto frei. */
@@ -176,6 +180,7 @@ h1 .akzent{color:${CI.brand}}
 .cta svg{width:34px;height:34px}
 .fuss{margin-top:24px;font-weight:700;font-size:24px;color:#b9bdc4;letter-spacing:.04em}
 </style></head><body>
+<div class="kopfschleier"></div>
 <div class="frame">
   ${logo}
   <div class="mitte">
@@ -223,7 +228,7 @@ html,body{width:1080px;height:1080px}
 body{font-family:Figtree,sans-serif;background:linear-gradient(150deg,${CI.inkDeep} 0%,#24262b 52%,#3c4047 100%);
   display:grid;place-items:center;position:relative}
 /* Hilfskreis = Facebook-Beschnitt; alles Wichtige liegt darin. */
-.safe{width:756px;height:756px;display:grid;place-items:center;text-align:center}
+.safe{width:824px;height:824px;display:grid;place-items:center;text-align:center}
 .mark{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain}
 .wort b{display:block;font-weight:900;font-size:118px;letter-spacing:.01em;color:${CI.brand};line-height:.98}
 .wort span{display:block;margin-top:26px;font-weight:700;font-size:38px;letter-spacing:.3em;
@@ -231,7 +236,7 @@ body{font-family:Figtree,sans-serif;background:linear-gradient(150deg,${CI.inkDe
 .ring{position:absolute;width:980px;height:980px;border-radius:50%;border:5px solid rgba(245,180,0,.30)}
 </style></head><body><div class="ring"></div><div class="safe">${inhalt}</div>
 <script>(function(){var w=document.querySelector('.wort b');
-if(w){var px=118;while(w.scrollWidth>756&&px>40){px-=2;w.style.fontSize=px+'px';}}
+if(w){var px=118;while(w.scrollWidth>824&&px>40){px-=2;w.style.fontSize=px+'px';}}
 document.documentElement.dataset.ready='1';})();</script></body></html>`;
 }
 
@@ -261,8 +266,8 @@ body{font-family:Figtree,sans-serif;background:linear-gradient(150deg,${CI.inkDe
 </style></head><body>
 <div class="safe">
   ${mark}
-  <div class="claim">Handwerk mit Handschrift –<br><em>seit 1968 in Filderstadt.</em></div>
-  <div class="meta"><span>Maler</span><span>Parkettleger</span><span>Raumausstatter</span><span>Wir stellen ein</span></div>
+  <div class="claim">Wir suchen Verstärkung<br><em>für unser Team in Filderstadt.</em></div>
+  <div class="meta"><span>Maler</span><span>Parkettleger</span><span>Raumausstatter</span><span>Festanstellung</span></div>
 </div>
 <div class="kante"></div>
 <script>(function(){var w=document.querySelector('.wort b');
@@ -277,14 +282,14 @@ const erzeugt = [];
 let ohneFoto = 0;
 
 for (const s of STELLEN) {
-  const fotoUri = s.foto.map(dataUri).find(Boolean) || null;
+  const fotoUri = s.foto.map(bildPfad).find(Boolean) || null;
   for (const [motivName, bauen] of Object.entries(MOTIVE)) {
     for (const [fmtName, fmt] of Object.entries(FORMATE)) {
       const page = await (await browser.newContext({
         viewport: { width: fmt.w, height: fmt.h }, deviceScaleFactor: 1
       })).newPage();
-      await page.setContent(html({ stelle: s, motiv: motivName, fmt, inhalt: bauen(s), fotoUri }),
-                            { waitUntil: 'load' });
+      writeFileSync(TMP, html({ stelle: s, motiv: motivName, fmt, inhalt: bauen(s), fotoUri }));
+      await page.goto('file://' + TMP, { waitUntil: 'load' });
       await page.evaluate(() => document.fonts.ready);
       await page.waitForFunction(() => document.documentElement.dataset.ready === '1');
       const datei = `${s.key}-${motivName}-${fmtName}${fotoUri ? '' : '-PREVIEW'}.png`;
@@ -299,7 +304,8 @@ for (const s of STELLEN) {
 for (const [name, bauen, w, h] of [['facebook-profilbild', fbProfil, 1080, 1080],
                                    ['facebook-titelbild',  fbTitel, 1640, 856]]) {
   const page = await (await browser.newContext({ viewport:{width:w,height:h}, deviceScaleFactor:1 })).newPage();
-  await page.setContent(bauen(), { waitUntil:'load' });
+  writeFileSync(TMP, bauen());
+  await page.goto('file://' + TMP, { waitUntil:'load' });
   await page.evaluate(() => document.fonts.ready);
   await page.waitForFunction(() => document.documentElement.dataset.ready === '1');
   const datei = `${name}${LOGO ? '' : '-PREVIEW'}.png`;
@@ -309,6 +315,7 @@ for (const [name, bauen, w, h] of [['facebook-profilbild', fbProfil, 1080, 1080]
 }
 
 await browser.close();
+rmSync(TMP, { force: true });
 
 console.log(`${erzeugt.length} Dateien gerendert nach creatives/`);
 erzeugt.forEach(d => console.log('  ' + d));

@@ -21,20 +21,21 @@ Farben und Schriften stecken **ausschließlich** im `:root`-Block ganz oben in
 `index.html`. Dort einmal ändern – die ganze Seite zieht nach.
 
 ```css
---brand:#f5b400;      /* Schanbacher-Gelb (Logo-Schriftzug) */
---brand-dark:#d99e00; /* Hover-Zustand                      */
---brand-700:#8f6800;  /* Gelb-Ton für Text auf Hell         */
---brand-900:#1b1d21;  /* Anthrazit: Headlines, Hero, Footer */
---brand-soft:#fff4d6; /* heller Gelb-Ton für Flächen        */
---on-brand:#1b1d21;   /* Textfarbe AUF Gelb (Kontrast!)     */
+--brand:#ffda00;      /* Schanbacher-Gelb, aus dem Logo     */
+--brand-dark:#e6c400; /* Hover-Zustand                      */
+--brand-700:#7d6a00;  /* Gelb-Ton für Text auf Hell         */
+--brand-900:#1d1d1b;  /* Anthrazit, aus dem Logo            */
+--brand-soft:#fff8d1; /* heller Gelb-Ton für Flächen        */
+--on-brand:#1d1d1b;   /* Textfarbe AUF Gelb (Kontrast!)     */
 --f-display / --f-body: Figtree
 ```
 
-> **Hinweis:** Diese Werte sind aus den verfügbaren Quellen abgeleitet
-> (gelber Logo-Schriftzug + Anthrazit). `schanbachergmbh.de` war aus der
-> Build-Umgebung nicht erreichbar, die exakten CI-Werte konnten also nicht
-> 1:1 aus der Website gezogen werden. Sobald Logo/Styleguide vorliegen:
-> oben die fünf Zeilen ersetzen, fertig.
+> Gelb und Anthrazit sind **direkt aus dem Original-Logo ausgelesen**
+> (`bilder/Schanbacher_Logo_weiss_SVG.png`): `#ffda00` und `#1d1d1b`.
+> Die Schrift (Figtree) ist weiterhin gesetzt, nicht aus der Website
+> übernommen – der Logo-Schriftzug hat eine eigene, schmale Schrift, die
+> als Fließtextschrift nicht taugt. Liegt ein Styleguide vor, ist das eine
+> Zeile (`--f-display` / `--f-body`).
 
 ## Stellen pflegen
 
@@ -189,11 +190,29 @@ Die Feldnamen folgen der Konvention der bestehenden Lead-Table-Anbindung
 derselben Agentur (`vorname`, `nachname`, `telefon`, `email` als
 Standardfelder, alles Weitere als Zusatzfelder).
 
+## Bildmaterial
+
+| Datei | verwendet für |
+|-------|---------------|
+| `Schanbacher_Logo_weiss_SVG.png` | Topbar, Hero, Footer, alle Creatives, Facebook |
+| `IMG_0218.JPG` (Wand spachteln) | Hero allgemein + Maler, Creatives Maler |
+| `IMG_0213.jpeg` (Boden schleifen) | Hero + Creatives Parkettleger |
+| `IMG_0212.JPG` (Spachtel-/Wandtextur) | Hero + Creatives Raumausstatter |
+
+Die Originale bleiben unverändert im Repo (die Creatives brauchen die volle
+Auflösung). Für die Seite liegen daneben web-optimierte Zuschnitte:
+`hero.jpg`, `hero-maler.jpg`, `hero-parkettleger.jpg`,
+`hero-raumausstatter.jpg` – je 2400 × 1350, 260–950 KB.
+
+Die Topbar ist dunkel, weil nur die **weiße** Logo-Variante vorliegt. Gibt es
+eine dunkle Variante, kann die Topbar auch wieder hell werden.
+
 ## Noch zu prüfen
 
 - **„Unbefristet"** ist angenommen (Tags, FAQ) – bitte bestätigen.
-- Logo und Hero-Foto in `bilder/` ablegen
-- CI-Farben/Schrift gegen den echten Styleguide abgleichen
+- Das Foto für **Raumausstatter** ist der schwächste Treffer (Wandtextur
+  statt Bodenbelag/Sonnenschutz). Ein passenderes Motiv einfach in
+  `creatives/build.mjs` unter `foto:` eintragen.
 - Links zu Impressum und Datenschutz (aktuell
   `schanbachergmbh.de/impressum/` und `/datenschutz/`)
 - Das Analytics-Snippet am Seitenende (`analytics.laendle-digital.com`,
@@ -231,14 +250,12 @@ Sicherheitszone 1092 × 616 mittig, unten rechts für den Button frei).
 
 **Bildmaterial.** Das Skript verwendet ausschließlich Dateien aus `bilder/`:
 
-- Foto je Stelle: `bilder/maler.jpg`, `bilder/parkettleger.jpg`,
-  `bilder/raumausstatter.jpg` – ersatzweise `bilder/hero.jpg`
-- Logo: `bilder/schanbacher-logo-weiss.png/.svg` (oder `logo-weiss`,
-  `schanbacher-logo`, `logo`). Es wird unverändert eingesetzt – nicht
-  nachgebaut, nicht eingefärbt, Seitenverhältnis bleibt erhalten.
+- Foto je Stelle: siehe Tabelle unter „Bildmaterial"; die Zuordnung steht
+  in `creatives/build.mjs` unter `foto:`
+- Logo: `bilder/Schanbacher_Logo_weiss_SVG.png`. Es wird unverändert
+  eingesetzt – nicht nachgebaut, nicht eingefärbt, Seitenverhältnis bleibt
+  erhalten.
 
 Fehlt eine Datei, rendert das Skript den CI-Farbverlauf bzw. die Wortmarke
-und hängt **`-PREVIEW`** an den Dateinamen. Diese Dateien sind reine
-Layout-Vorschauen und **nicht zum Schalten gedacht**. Sobald die Bilder in
-`bilder/` liegen: einmal `node creatives/build.mjs` – dann fallen die
-`-PREVIEW`-Dateien weg und die fertigen Creatives stehen da.
+und hängt **`-PREVIEW`** an den Dateinamen. Aktuell sind Logo und Fotos
+vorhanden – alle 20 Dateien sind final und ohne `-PREVIEW`.
