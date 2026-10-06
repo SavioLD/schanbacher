@@ -224,6 +224,84 @@ eine dunkle Variante, kann die Topbar auch wieder hell werden.
 Alles in `creatives/`. Gerendert wird mit **einem** Befehl:
 
 ```bash
+node creatives/build.mjs          # je Stelle 1 Creative (9:16) + Facebook
+node creatives/build.mjs --alle   # alle Motive in allen Formaten
+```
+
+Das Skript baut jede Datei aus HTML/CSS im CI der Karriereseite – gleiche
+Farben, gleiche Schrift (Figtree liegt als woff2 in `creatives/fonts/`, damit
+offline identisch gerendert wird). Creatives und Facebook-Bilder wirken
+dadurch als ein Auftritt.
+
+**Was standardmäßig entsteht**
+
+| Datei | Format |
+|-------|--------|
+| `maler-9x16.png` | 1080 × 1920 |
+| `parkettleger-9x16.png` | 1080 × 1920 |
+| `raumausstatter-9x16.png` | 1080 × 1920 |
+| `facebook-profilbild.png` | 1080 × 1080, alles Wichtige in der mittigen Kreisfläche |
+| `facebook-titelbild.png` | 1640 × 856, Sicherheitszone 1092 × 616, unten rechts frei |
+
+Das Hauptmotiv vereint Stellenbezeichnung, die Qualifikationshürde
+(„Ausbildung und mindestens 3 Jahre Erfahrung vorausgesetzt" – filtert auf
+Qualität statt Masse), die Benefits der jeweiligen Stelle und den CTA.
+Safe Zones für Stories/Reels sind berücksichtigt.
+
+**Weitere Motive** liegen in `MOTIVE` bereit und lassen sich mit `--alle`
+rendern: `check` (reiner Qualifizierer mit allen K.-o.-Kriterien) und
+`benefit` (Problem → Lösung). Ein zusätzliches Format ist eine Zeile in
+`FORMATE` (`1x1` liegt auskommentiert bereit).
+
+**Bildmaterial.** Das Skript verwendet ausschließlich Dateien aus `bilder/`:
+
+- Foto je Stelle: siehe Tabelle unter „Bildmaterial"; die Zuordnung steht
+  in `creatives/build.mjs` unter `foto:`
+- Logo: `bilder/Schanbacher_Logo_weiss_SVG.png`. Es wird unverändert
+  eingesetzt – nicht nachgebaut, nicht eingefärbt, Seitenverhältnis bleibt
+  erhalten.
+
+Fehlt eine Datei, rendert das Skript den CI-Farbverlauf bzw. die Wortmarke
+und hängt **`-PREVIEW`** an den Dateinamen. Aktuell sind Logo und Fotos
+vorhanden – alle Dateien sind final und ohne `-PREVIEW`.
+
+Fehlt ein Textfeld in der `STELLEN`-Config, bricht der Build mit einer
+klaren Meldung ab, statt „undefined" ins fertige Creative zu rendern.
+
+## Bildmaterial
+
+| Datei | verwendet für |
+|-------|---------------|
+| `Schanbacher_Logo_weiss_SVG.png` | Topbar, Hero, Footer, alle Creatives, Facebook |
+| `IMG_0218.JPG` (Wand spachteln) | Hero allgemein + Maler, Creatives Maler |
+| `IMG_0213.jpeg` (Boden schleifen) | Hero + Creatives Parkettleger |
+| `IMG_0212.JPG` (Spachtel-/Wandtextur) | Hero + Creatives Raumausstatter |
+
+Die Originale bleiben unverändert im Repo (die Creatives brauchen die volle
+Auflösung). Für die Seite liegen daneben web-optimierte Zuschnitte:
+`hero.jpg`, `hero-maler.jpg`, `hero-parkettleger.jpg`,
+`hero-raumausstatter.jpg` – je 2400 × 1350, 260–950 KB.
+
+Die Topbar ist dunkel, weil nur die **weiße** Logo-Variante vorliegt. Gibt es
+eine dunkle Variante, kann die Topbar auch wieder hell werden.
+
+## Noch zu prüfen
+
+- **„Unbefristet"** ist angenommen (Tags, FAQ) – bitte bestätigen.
+- Das Foto für **Raumausstatter** ist der schwächste Treffer (Wandtextur
+  statt Bodenbelag/Sonnenschutz). Ein passenderes Motiv einfach in
+  `creatives/build.mjs` unter `foto:` eintragen.
+- Links zu Impressum und Datenschutz (aktuell
+  `schanbachergmbh.de/impressum/` und `/datenschutz/`)
+- Das Analytics-Snippet am Seitenende (`analytics.laendle-digital.com`,
+  `data-website-id="schanbacher_gmbh"`) ist 1:1 von der Referenzseite
+  übernommen – bei Bedarf entfernen oder die ID anpassen
+
+## Creatives (Meta Ads) + Facebook-Seite
+
+Alles in `creatives/`. Gerendert wird mit **einem** Befehl:
+
+```bash
 node creatives/build.mjs
 ```
 

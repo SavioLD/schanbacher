@@ -67,6 +67,7 @@ const STELLEN = [
     koennen: 'Spachteltechniken, Oberflächenputze und fugenlose Wände',
     chips: ['Firmenwagen', 'Weihnachtsgeld', 'Eigene Ideen'],
     benefitZeile: 'Firmenwagen, Weihnachtsgeld – und Wände, die deine Handschrift tragen.',
+    lohn: 'Wände, die deine Handschrift tragen.',
     problem: 'Immer nur weiß streichen?'
   },
   {
@@ -75,6 +76,7 @@ const STELLEN = [
     koennen: 'Holzböden verlegen, schleifen und veredeln',
     chips: ['Weihnachtsgeld', 'Weiterbildung', 'Eigene Ideen'],
     benefitZeile: 'Weihnachtsgeld, Weiterbildung – und Böden, die man dir ansieht.',
+    lohn: 'Böden, die man dir ansieht.',
     problem: 'Akkord statt Handwerk?'
   },
   {
@@ -83,12 +85,23 @@ const STELLEN = [
     koennen: 'Beläge, Holzböden sowie Licht-, Sicht- und Sonnenschutz',
     chips: ['Firmenwagen', 'Weihnachtsgeld', 'Weiterbildung'],
     benefitZeile: 'Firmenwagen, Weihnachtsgeld – und jeden Tag ein anderer Raum.',
+    lohn: 'jeden Tag ein anderer Raum.',
     problem: 'Jeden Tag dieselbe Halle?'
   }
 ];
 
 /* ---------- Motive ---------- */
 const MOTIVE = {
+  /* HAUPTMOTIV – das eine Creative je Stelle.
+     Vereint Stellenbezeichnung, die Qualifikationshürde (filtert auf
+     Qualität statt Masse), die Benefits der Stelle und den CTA. */
+  haupt: s => ({
+    eyebrow: 'Festanstellung · Filderstadt',
+    head:    `${s.beruf} (m/w/d)<br><span class="akzent">gesucht.</span>`,
+    sub:     `Ausbildung und mindestens 3 Jahre Erfahrung vorausgesetzt. Dafür: ${s.lohn}`,
+    chips:   s.chips,
+    cta:     'In 60 Sekunden bewerben'
+  }),
   /* 1 · Stelle direkt ansprechen */
   stelle: s => ({
     eyebrow: 'Festanstellung · Filderstadt',
@@ -275,7 +288,14 @@ if(w){var px=104;while(w.scrollWidth>1092&&px>40){px-=2;w.style.fontSize=px+'px'
 document.documentElement.dataset.ready='1';})();</script></body></html>`;
 }
 
-/* ---------- Rendern ---------- */
+/* ---------- Rendern ----------
+   Standard: je Stelle EIN Creative im Format 9:16 plus die beiden
+   Facebook-Bilder.  Mit  node creatives/build.mjs --alle  werden alle
+   Motive in allen Formaten gerendert. */
+const ALLE = process.argv.includes('--alle');
+const MOTIV_AUSWAHL  = ALLE ? Object.keys(MOTIVE)  : ['haupt'];
+const FORMAT_AUSWAHL = ALLE ? Object.keys(FORMATE) : ['9x16'];
+
 const browser = await chromium.launch();
 mkdirSync(OUT, { recursive: true });
 const erzeugt = [];
@@ -283,16 +303,28 @@ let ohneFoto = 0;
 
 for (const s of STELLEN) {
   const fotoUri = s.foto.map(bildPfad).find(Boolean) || null;
-  for (const [motivName, bauen] of Object.entries(MOTIVE)) {
-    for (const [fmtName, fmt] of Object.entries(FORMATE)) {
+  for (const motivName of MOTIV_AUSWAHL) {
+    const bauen = MOTIVE[motivName];
+    for (const fmtName of FORMAT_AUSWAHL) {
+      const fmt = FORMATE[fmtName];
       const page = await (await browser.newContext({
         viewport: { width: fmt.w, height: fmt.h }, deviceScaleFactor: 1
       })).newPage();
-      writeFileSync(TMP, html({ stelle: s, motiv: motivName, fmt, inhalt: bauen(s), fotoUri }));
+      const inhalt = bauen(s);
+      /* Schutz vor stillen Luecken: ein fehlendes Config-Feld landet sonst
+         als "undefined" im fertigen Creative. */
+      for (const [feld, wert] of Object.entries(inhalt)) {
+        const text = Array.isArray(wert) ? wert.join(' ') : String(wert);
+        if (/undefined|null|NaN/.test(text))
+          throw new Error(`Motiv "${motivName}", Stelle "${s.key}": Feld "${feld}" enthaelt "${text}" – fehlt ein Eintrag in STELLEN?`);
+      }
+      writeFileSync(TMP, html({ stelle: s, motiv: motivName, fmt, inhalt, fotoUri }));
       await page.goto('file://' + TMP, { waitUntil: 'load' });
       await page.evaluate(() => document.fonts.ready);
       await page.waitForFunction(() => document.documentElement.dataset.ready === '1');
-      const datei = `${s.key}-${motivName}-${fmtName}${fotoUri ? '' : '-PREVIEW'}.png`;
+      const datei = (motivName === 'haupt')
+        ? `${s.key}-${fmtName}${fotoUri ? '' : '-PREVIEW'}.png`
+        : `${s.key}-${motivName}-${fmtName}${fotoUri ? '' : '-PREVIEW'}.png`;
       await page.screenshot({ path: join(OUT, datei) });
       erzeugt.push(datei);
       await page.context().close();
