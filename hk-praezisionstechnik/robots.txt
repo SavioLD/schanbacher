@@ -1,3 +1,0 @@
-# Entwurf – nicht indexieren
-User-agent: *
-Disallow: /
