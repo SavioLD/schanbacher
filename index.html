@@ -658,6 +658,12 @@ footer{padding:52px 0 36px;background:var(--brand-900);color:#d7d9dd}
   /* Jede Stelle hat ihre eigene Lead-Table-Kachel – die URL steht beim
      jeweiligen JOBS-Eintrag unter "webhook". Diese Variable ist nur noch
      der Rückfall, falls eine Stelle einmal keine eigene URL hat. */
+  /* E-Mail-Benachrichtigung bei neuer Bewerbung (Web3Forms).
+     Der Access Key ist laut Web3Forms öffentlich und ausdrücklich für
+     Client-Code vorgesehen. Empfänger, Autoresponder und Spamschutz
+     stellst du im Web3Forms-Dashboard unter "Settings" ein. */
+  var WEB3FORMS_KEY = "224a09d7-cf63-4148-ad1a-1d1d890900d5";
+
   var WEBHOOK_URL = "https://api-v2.lead-table.com/api/webhook/generic/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0YWJsZUlEIjoiNmFiZjk0OWRkZWVmMGVmOTdmMTRlMjVmIiwiY3VzdG9tZXJJRCI6IjZhYmY5NDgwYjAxMTBhNTVjMDE1MDI0MiIsImFnZW5jeUlEIjoiNjliZDc3NzVlNGQxN2IzOGVkNjUzZDE2IiwiaWF0IjoxNzkwOTQwMzE3fQ.iQbGYjywtsyUnq84gLIFM56pD113zQmXBliUC6p9M3Y";
 
   /* =====================================================================
@@ -1054,6 +1060,42 @@ footer{padding:52px 0 36px;background:var(--brand-900);color:#d7d9dd}
     };
   }
 
+  /* ---------------------------------------------------------------------
+     E-MAIL-BENACHRICHTIGUNG
+     Läuft parallel zum Lead-Table-Webhook und ist bewusst
+     "fire and forget": Fällt Web3Forms aus, merkt der Bewerber nichts und
+     die Bewerbung geht trotzdem an die Lead Table. Wird nur bei einer
+     vollständigen, qualifizierten Bewerbung aufgerufen – K.-o.-Abbrüche
+     lösen keine Mail aus.
+     --------------------------------------------------------------------- */
+  function notifyEmail(data){
+    try {
+      var name = (data.vorname + " " + data.nachname).trim();
+      fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_KEY,
+          subject:   "Neue Bewerbung – " + data.stelle + " – " + name,
+          from_name: "Schanbacher Karriereseite",
+          replyto:   data.email,
+          "Stelle":                            data.stelle,
+          "Name":                              name,
+          "Telefon":                           data.telefon,
+          "E-Mail":                            data.email,
+          "Qualifikation":                     data.qualifikation,
+          "Berufsweg":                         data.berufsweg,
+          "Führerschein & Arbeitserlaubnis":   data.fuehrerschein_arbeitserlaubnis,
+          "Deutschkenntnisse":                 data.deutschkenntnisse,
+          "Anfahrt":                           data.anfahrt,
+          "Nicht erfüllt":                     data.nicht_erfuellt,
+          "Bewerbungsdatum":                   data.datum,
+          "Quelle":                            data.seite
+        })
+      }).catch(function(){});
+    } catch(e){}
+  }
+
   function submit(){
     /* Honeypot: Bots füllen das versteckte Feld – still beenden, kein Lead. */
     if (form.querySelector('input[name="firma_website"]').value){ finishSuccess(); return; }
@@ -1061,6 +1103,7 @@ footer{padding:52px 0 36px;background:var(--brand-900);color:#d7d9dd}
     var data=collect(), payload=JSON.stringify(data);
     var job=jobByTitle(data.stelle);
     var url=(job && job.webhook) || WEBHOOK_URL;
+    notifyEmail(data);
     fetch(url,{ method:"POST", headers:{ "Content-Type":"application/json" }, body:payload })
       .then(function(res){ if(!res.ok) throw new Error("HTTP "+res.status); finishSuccess(); })
       .catch(function(){

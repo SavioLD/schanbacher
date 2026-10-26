@@ -163,6 +163,30 @@ richtigen Kachel.
 Gesendet wird **nur** bei vollständiger, qualifizierter Bewerbung.
 K.-o.-Abbrüche verlassen die Seite nie – auch nicht an die anderen Kacheln.
 
+## E-Mail-Benachrichtigung (Web3Forms)
+
+Parallel zur Lead Table geht bei jeder abgeschlossenen Bewerbung eine Mail
+raus. Access Key steht in `index.html` unter `WEB3FORMS_KEY` – er ist laut
+Web3Forms öffentlich und ausdrücklich für Client-Code gedacht.
+
+Betreff: `Neue Bewerbung – <Stelle> – <Vorname Nachname>`
+`replyto` ist die Adresse des Bewerbers – eine Antwort auf die Mail geht
+also direkt an ihn.
+
+Im Mailtext stehen Stelle, Name, Telefon, E-Mail, alle fünf
+Screening-Antworten, das Feld „Nicht erfüllt", das Bewerbungsdatum und die
+Quell-URL.
+
+**Empfänger, Autoresponder und Spamschutz** stellst du im
+Web3Forms-Dashboard unter *Settings* ein – nicht im Code.
+
+Der Aufruf ist bewusst „fire and forget": Fällt Web3Forms aus, merkt der
+Bewerber nichts und die Bewerbung geht trotzdem an die Lead Table. Im
+Browser gegengeprüft (HTTP 500 und Verbindungsabbruch): In beiden Fällen
+sieht der Bewerber die Erfolgsansicht und der Lead kommt an.
+
+K.-o.-Abbrüche lösen **keine** Mail aus.
+
 Payload – **jedes Feld genau einmal**, Vor- und Nachname getrennt, **kein**
 kombiniertes `name`/`fullname`/`vollstaendiger_name`:
 
