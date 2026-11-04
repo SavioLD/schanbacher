@@ -111,8 +111,10 @@ Kein Zusatzfeld, keine Adresse, kein Geburtsdatum.
 
 ### Benutzerdefinierte Fragen — alle „Multiple Choice", Antworten `Ja` / `Nein`
 
-Identisch für alle drei Stellen. Reihenfolge bewusst so: das härteste
-Kriterium zuerst.
+Vier Fragen, identisch für alle drei Stellen. Es sind genau die vier
+Punkte, die auf der Karriereseite unter **„Das setzen wir voraus"** stehen
+(`VORAUSSETZUNGEN` in `index.html`) – Anzeige, Formular und Screening
+verlangen damit exakt dasselbe. Das härteste Kriterium steht zuerst.
 
 ```
 Hast du eine abgeschlossene Ausbildung im Handwerk und mindestens 3 Jahre Berufserfahrung?
@@ -127,19 +129,7 @@ Sprichst du Deutsch mindestens auf B2-Niveau?
 ```
 
 ```
-Darfst du in Deutschland arbeiten – unbefristet oder mit einer Erlaubnis für mindestens 2 Jahre?
-```
-
-```
 Wohnst du im Umkreis von 30 km um Filderstadt?
-```
-
-```
-Warst du nie oder höchstens 3 Jahre in der Industrie tätig?
-```
-
-```
-Warst du in den letzten Jahren höchstens 3 Monate am Stück arbeitssuchend?
 ```
 
 Antwortoptionen bei jeder Frage:
@@ -151,6 +141,17 @@ Ja
 ```
 Nein
 ```
+
+**Nicht im Meta-Formular**, bewusst weggelassen, um bei vier Fragen zu
+bleiben – diese drei K.-o.-Kriterien prüft weiterhin das Formular auf der
+Karriereseite:
+
+- Arbeitserlaubnis für mindestens 2 Jahre
+- nie oder höchstens 3 Jahre in der Industrie
+- höchstens 3 Monate am Stück arbeitssuchend
+
+Wer über die Meta-Anzeige kommt, wird darauf also erst im Gespräch geprüft.
+Wer über die Karriereseite kommt, fällt schon im Formular raus.
 
 **Nicht gefragt:** das Alter (20–45). Eine Altersabfrage ist eine unmittelbare
 Benachteiligung wegen des Alters nach § 1 AGG. Über das Meta-Targeting lässt
