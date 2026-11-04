@@ -62,10 +62,17 @@ Eine Stelle ändern oder ergänzen heißt also: **einen** Eintrag anfassen.
 Raumausstatter, Weiterbildung bei Parkettleger und Raumausstatter,
 Weihnachtsgeld bei allen dreien.
 
-Der Block **„Das setzen wir voraus"** ist dagegen für alle Stellen gleich und
-steht einmal in `var VORAUSSETZUNGEN`. Er enthält exakt die K.-o.-Kriterien,
-die das Screening später prüft – so verlangt die Anzeige nichts anderes als
-das Formular.
+Der Block **„Das setzen wir voraus"** kommt aus `voraussetzungen(job)`. Er
+enthält exakt die K.-o.-Kriterien, die das Screening später prüft – so
+verlangt die Anzeige nichts anderes als das Formular.
+
+Das erste Kriterium ist **stellenspezifisch**: Es nennt den Beruf aus dem
+Feld `ausbildung` des jeweiligen `JOBS`-Eintrags (Maler und Lackierer,
+Parkettleger, Raumausstatter). „Ausbildung im Handwerk" allein wäre zu weit –
+das würde auch Kfz-Mechatroniker oder Bäcker einschließen. Die Screening-Frage
+„Deine Qualifikation" zieht automatisch nach, sobald die Stelle feststeht
+(Deeplink, Klick auf eine Stellenkarte oder Auswahl im Formular) – sichtbarer
+Text **und** der Wert, der an die Lead Table geht.
 
 ## Stellen-Deeplinks für die Anzeige
 
@@ -87,7 +94,7 @@ drei Stellen gleich. Alle fünf Fragen sind **Pflichtfragen (K.-o.-Kriterien)**:
 
 | # | Frage | Kategorie | Erfüllt bei |
 |---|-------|-----------|-------------|
-| 1 | Qualifikation | Pflicht | Abgeschlossene Ausbildung im Handwerk **+ mind. 3 Jahre** Erfahrung |
+| 1 | Qualifikation | Pflicht | Abgeschlossene Ausbildung **im Beruf der jeweiligen Stelle** + mind. 3 Jahre Erfahrung |
 | 2 | Berufsweg | Pflicht | Max. 3 Jahre Industrie **und** keine Lücke über 3 Monate |
 | 3 | Führerschein & Arbeitserlaubnis | Pflicht | Klasse B **und** Arbeitserlaubnis ab 2 Jahren |
 | 4 | Deutschkenntnisse | Pflicht | Mindestens B2 |

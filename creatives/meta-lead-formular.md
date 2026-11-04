@@ -111,13 +111,28 @@ Kein Zusatzfeld, keine Adresse, kein Geburtsdatum.
 
 ### Benutzerdefinierte Fragen — alle „Multiple Choice", Antworten `Ja` / `Nein`
 
-Vier Fragen, identisch für alle drei Stellen. Es sind genau die vier
-Punkte, die auf der Karriereseite unter **„Das setzen wir voraus"** stehen
-(`VORAUSSETZUNGEN` in `index.html`) – Anzeige, Formular und Screening
-verlangen damit exakt dasselbe. Das härteste Kriterium steht zuerst.
+Vier Fragen. Es sind genau die vier Punkte, die auf der Karriereseite unter
+**„Das setzen wir voraus"** stehen (`voraussetzungen()` in `index.html`) –
+Anzeige, Formular und Screening verlangen damit exakt dasselbe. Das härteste
+Kriterium steht zuerst.
+
+**Die Ausbildung ist stellenspezifisch:** Für die Maler-Stelle zählt eine
+Maler-Ausbildung, nicht irgendeine im Handwerk. „Handwerk" allein würde auch
+Kfz-Mechatroniker oder Bäcker durchlassen. Die Fragen 2 bis 4 sind für alle
+drei Stellen gleich.
 
 ```
-Hast du eine abgeschlossene Ausbildung im Handwerk und mindestens 3 Jahre Berufserfahrung?
+Hast du eine abgeschlossene Ausbildung als Maler und Lackierer und mindestens 3 Jahre Berufserfahrung in dem Beruf?
+```
+
+Für die anderen beiden Stellen den Beruf tauschen:
+
+```
+Hast du eine abgeschlossene Ausbildung als Parkettleger und mindestens 3 Jahre Berufserfahrung in dem Beruf?
+```
+
+```
+Hast du eine abgeschlossene Ausbildung als Raumausstatter und mindestens 3 Jahre Berufserfahrung in dem Beruf?
 ```
 
 ```

@@ -331,8 +331,6 @@ footer{padding:52px 0 36px;background:var(--brand-900);color:#d7d9dd}
   .choice{font-size:14.5px;padding:12px 13px;gap:11px}
   .choice .key{flex:0 0 26px;height:26px}
 }
-/* Sehr schmale Geräte brauchen etwas mehr Mindesthöhe. */
-@media(max-width:340px){:root{--form-min-mobile:528px}}
 @media(hover:none){.btn--primary:hover,.job:hover,.choice:hover{transform:none}}
 </style>
 </head>
@@ -496,7 +494,7 @@ footer{padding:52px 0 36px;background:var(--brand-900);color:#d7d9dd}
           <div class="choice-grid" data-field="qualifikation">
             <label class="choice"><input type="radio" name="qualifikation" value="Abgeschlossene Ausbildung im Handwerk (Maler/Lackierer, Parkettleger, Raumausstatter o. Ä.) und mindestens 3 Jahre Berufserfahrung" data-ok="1" /><span class="key">A</span><span>Ausbildung + mind. 3 Jahre Erfahrung<small>Maler/Lackierer, Parkettleger, Raumausstatter</small></span></label>
             <label class="choice"><input type="radio" name="qualifikation" value="Abgeschlossene Ausbildung, aber weniger als 3 Jahre Berufserfahrung" /><span class="key">B</span><span>Ausbildung, unter 3 Jahre Erfahrung</span></label>
-            <label class="choice"><input type="radio" name="qualifikation" value="Keine abgeschlossene Ausbildung, aber mehrjährige Erfahrung im Handwerk" /><span class="key">C</span><span>Keine Ausbildung, aber Erfahrung</span></label>
+            <label class="choice"><input type="radio" name="qualifikation" value="Andere oder keine abgeschlossene Ausbildung, aber mehrjährige Erfahrung im Bereich" /><span class="key">C</span><span>Andere oder keine Ausbildung<small>dafür Erfahrung im Bereich</small></span></label>
             <label class="choice"><input type="radio" name="qualifikation" value="Weder Ausbildung noch Erfahrung im Handwerk" /><span class="key">D</span><span>Weder Ausbildung noch Erfahrung</span></label>
           </div>
         </div>
@@ -680,7 +678,7 @@ footer{padding:52px 0 36px;background:var(--brand-900);color:#d7d9dd}
 
   var JOBS = [
     {
-      key:"maler", title:"Maler (m/w/d)", kurz:"Maler", icon:ICONS.maler,
+      key:"maler", ausbildung:"Maler und Lackierer", title:"Maler (m/w/d)", kurz:"Maler", icon:ICONS.maler,
       teaser:"Spachteln · Putztechniken · fugenlose Oberflächen",
       hook:"Spachteltechniken, Oberflächenputze und fugenlose Wände – plus Firmenwagen zur dienstlichen Nutzung.",
       aliase:["maler","malerin","maler-lackierer","malerlackierer"],
@@ -705,7 +703,7 @@ footer{padding:52px 0 36px;background:var(--brand-900);color:#d7d9dd}
       ]
     },
     {
-      key:"parkettleger", title:"Parkettleger (m/w/d)", kurz:"Parkettleger", icon:ICONS.parkett,
+      key:"parkettleger", ausbildung:"Parkettleger", title:"Parkettleger (m/w/d)", kurz:"Parkettleger", icon:ICONS.parkett,
       teaser:"Holzböden verlegen · schleifen · ölen und lackieren",
       hook:"Holzböden verlegen, schleifen und veredeln – präzises Handwerk mit viel Eigenverantwortung.",
       aliase:["parkettleger","parkett","parkettlegerin","bodenleger"],
@@ -731,7 +729,7 @@ footer{padding:52px 0 36px;background:var(--brand-900);color:#d7d9dd}
       ]
     },
     {
-      key:"raumausstatter", title:"Raumausstatter (m/w/d)", kurz:"Raumausstatter", icon:ICONS.raumausstatter,
+      key:"raumausstatter", ausbildung:"Raumausstatter", title:"Raumausstatter (m/w/d)", kurz:"Raumausstatter", icon:ICONS.raumausstatter,
       teaser:"Beläge · Holzböden · Licht-, Sicht- und Sonnenschutz",
       hook:"Böden, Wände und Sonnenschutz aus einer Hand – abwechslungsreiches Handwerk mit Firmenwagen.",
       aliase:["raumausstatter","raumausstatterin","raumaustatter","raumgestaltung"],
@@ -762,12 +760,17 @@ footer{padding:52px 0 36px;background:var(--brand-900);color:#d7d9dd}
   /* Die K.-o.-Kriterien gelten für alle drei Stellen gleich. Sie stehen
      deshalb einmal hier und werden in jede Stellenkarte gerendert – damit
      die Anzeige exakt das verlangt, was das Screening später prüft. */
-  var VORAUSSETZUNGEN = [
-    "Abgeschlossene Ausbildung im Handwerk (Maler/Lackierer, Parkettleger, Raumausstatter o. Ä.) und mindestens 3 Jahre Berufserfahrung",
-    "Führerschein der Klasse B",
-    "Deutschkenntnisse auf mindestens B2-Niveau",
-    "Wohnort im Umkreis von 30 km um unseren Standort Filderstadt"
-  ];
+  /* Die K.-o.-Kriterien. Nur das erste haengt an der Stelle: fuer die
+     Maler-Stelle zaehlt eine Maler-Ausbildung, nicht irgendeine im
+     Handwerk. Die uebrigen drei gelten fuer alle Stellen gleich. */
+  function voraussetzungen(job){
+    return [
+      "Abgeschlossene Ausbildung als " + job.ausbildung + " und mindestens 3 Jahre Berufserfahrung",
+      "Führerschein der Klasse B",
+      "Deutschkenntnisse auf mindestens B2-Niveau",
+      "Wohnort im Umkreis von 30 km um unseren Standort Filderstadt"
+    ];
+  }
 
   function jobByKey(k){ for (var i=0;i<JOBS.length;i++){ if (JOBS[i].key===k) return JOBS[i]; } return null; }
   function jobByTitle(t){ for (var i=0;i<JOBS.length;i++){ if (JOBS[i].title===t) return JOBS[i]; } return null; }
@@ -845,7 +848,7 @@ footer{padding:52px 0 36px;background:var(--brand-900);color:#d7d9dd}
         + '<h3>'+esc(j.title)+'</h3>'
         + '<div class="job__meta">'+j.tags.map(function(t){ return '<span class="tag">'+esc(t)+'</span>'; }).join("")+'</div>'
         + '<h4>Deine Aufgaben</h4><ul class="'+splitClass.trim()+'">'+j.aufgaben.map(function(x){ return '<li>'+esc(x)+'</li>'; }).join("")+'</ul>'
-        + '<h4>Das setzen wir voraus</h4><ul class="job__must">'+VORAUSSETZUNGEN.map(function(x){ return '<li>'+esc(x)+'</li>'; }).join("")+'</ul>'
+        + '<h4>Das setzen wir voraus</h4><ul class="job__must">'+voraussetzungen(j).map(function(x){ return '<li>'+esc(x)+'</li>'; }).join("")+'</ul>'
         + '<h4>Das bringst du mit</h4><ul>'+j.profil.map(function(x){ return '<li>'+esc(x)+'</li>'; }).join("")+'</ul>'
         + '<h4>Das bieten wir dir</h4><ul>'+j.bieten.map(function(x){ return '<li>'+esc(x)+'</li>'; }).join("")+'</ul>'
         + '<div class="job__foot"><button class="btn btn--primary" data-apply="'+j.key+'">Jetzt bewerben</button></div>'
@@ -864,7 +867,7 @@ footer{padding:52px 0 36px;background:var(--brand-900);color:#d7d9dd}
         datePosted:today, validThrough:through, employmentType:"FULL_TIME",
         hiringOrganization:{"@type":"Organization",name:"Schanbacher GmbH",sameAs:"https://www.schanbachergmbh.de/"},
         jobLocation:{"@type":"Place",address:{"@type":"PostalAddress",streetAddress:"Turnackerstraße 62",addressLocality:"Filderstadt",postalCode:"70794",addressRegion:"BW",addressCountry:"DE"}},
-        qualifications:VORAUSSETZUNGEN.join(". ")+".",
+        qualifications:voraussetzungen(j).join(". ")+".",
         jobBenefits:j.bieten.join(", "),
         directApply:true
       };
@@ -980,6 +983,7 @@ footer{padding:52px 0 36px;background:var(--brand-900);color:#d7d9dd}
   form.querySelectorAll(".choice-grid").forEach(function(grid){
     grid.addEventListener("change", function(){
       grid.querySelectorAll(".choice").forEach(function(c){ c.classList.toggle("is-selected", c.querySelector("input").checked); });
+      if (grid.getAttribute("data-field") === "stelle") setQualifikationsFrage(jobByTitle(selectedValue("stelle")));
       btnNext.disabled=!stepValid(current);
       setTimeout(next,300);
     });
@@ -996,9 +1000,31 @@ footer{padding:52px 0 36px;background:var(--brand-900);color:#d7d9dd}
      Stellenkarte. Der Auswahl-Schritt entfällt dann komplett, der Hero
      wird auf die Stelle getextet.
      --------------------------------------------------------------------- */
+  /* ---------------------------------------------------------------------
+     QUALIFIKATIONSFRAGE AN DIE STELLE ANPASSEN
+     Fuer die Maler-Stelle zaehlt eine Maler-Ausbildung, nicht irgendeine
+     im Handwerk. Angepasst werden der sichtbare Text UND der Wert, der an
+     die Lead Table geht. Wird aufgerufen, sobald die Stelle feststeht.
+     --------------------------------------------------------------------- */
+  function setQualifikationsFrage(job){
+    if (!job) return;
+    var grid = form.querySelector('.choice-grid[data-field="qualifikation"]');
+    if (!grid) return;
+    var opts = grid.querySelectorAll(".choice");
+    var a = opts[0], b = opts[1];
+    if (a){
+      a.querySelector("input").value = "Abgeschlossene Ausbildung als " + job.ausbildung + " und mindestens 3 Jahre Berufserfahrung";
+      a.querySelector("small").textContent = "als " + job.ausbildung;
+    }
+    if (b){
+      b.querySelector("input").value = "Abgeschlossene Ausbildung als " + job.ausbildung + ", aber weniger als 3 Jahre Berufserfahrung";
+    }
+  }
+
   function setStelle(key){
     var job = jobByKey(key); if (!job || locked) return false;
     setHeroBild(key);
+    setQualifikationsFrage(job);
     var radio = form.querySelector('input[name="stelle"][data-key="'+key+'"]'); if (!radio) return false;
     radio.checked = true;
     radio.closest(".choice-grid").querySelectorAll(".choice").forEach(function(c){ c.classList.toggle("is-selected", c.querySelector("input").checked); });
@@ -1122,6 +1148,7 @@ footer{padding:52px 0 36px;background:var(--brand-900);color:#d7d9dd}
   function finishSuccess(){ lockForm(); screenoutEl.classList.remove("is-visible"); successEl.classList.add("is-visible"); label.textContent="Fertig"; }
   function showScreenout(){ lockForm(); successEl.classList.remove("is-visible"); screenoutEl.classList.add("is-visible"); label.textContent="Danke"; }
 
+  if (JOBS.length === 1) setQualifikationsFrage(JOBS[0]);
   setHeroBild("");
   render();
 })();
